@@ -1,8 +1,11 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\,.<>?/`~";
 
 export default function AddTask() {
+  const { addTask } = useContext(GlobalContext);
+
   const [title, setTitle] = useState("");
   const descriptionRef = useRef();
   const statusRef = useRef();
@@ -14,7 +17,7 @@ export default function AddTask() {
     return "";
   }, [title]);
 
-  const handelSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (taskTitleError) return;
 
@@ -24,13 +27,21 @@ export default function AddTask() {
       status: statusRef.current.value,
     };
 
-    console.log(newTask);
+    try {
+      await addTask(newTask);
+      alert("Task creata con successo");
+      setTitle("");
+      descriptionRef.current.value = "";
+      statusRef.current.value = "";
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   return (
     <div>
       <h1>Aggiungi Task</h1>
-      <form onSubmit={handelSubmit}>
+      <form onSubmit={handleSubmit}>
         <label>
           Nome del task
           <input
