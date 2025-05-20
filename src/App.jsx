@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom";
 import AddTask from "./pages/AddTask";
 import TaskList from "./pages/TaskList";
+import TaskDetail from "./pages/TaskDetail";
 import { GlobalProvider } from "./contexts/GlobalContext";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TaskList />} />
           <Route path="/add" element={<AddTask />} />
+          <Route path="/task/:id" element={<TaskDetail />} />
         </Routes>
       </BrowserRouter>
     </GlobalProvider>
